@@ -2,3 +2,41 @@
   min-height: 14rem;
   background: linear-gradient(120deg, #414b56, #00a2e1);
 }
+
+.result-card {
+  width: 18rem;
+}
+
+.result-summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.result-description {
+  text-transform: capitalize;
+}
+
+.result-city {
+  display: flex;
+  text-transform: capitalize;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.result-wind {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.result-wind img{
+  max-width: 1rem;
+}
+
+.result-icon {
+  max-width: 2rem;
+}
