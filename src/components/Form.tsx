@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import type { GeoData, WeatherData } from '../types/WeatherTypes';
+import { Container  } from 'reactstrap';
 
 function Form(): JSX.Element {
   const [city, setCity] = useState<string>('');
@@ -32,29 +33,37 @@ function Form(): JSX.Element {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Enter a city:
-        <input type="text" value={city} onChange={handleChange} />
-      </label>
-      <button type="submit">Search</button>
-      {weatherData && (
-        <div>
-          <h2>Weather for {weatherData.name}:</h2>
-          <p><img src={`../images/icons/${weatherData.weather[0].icon}.png`} alt="icon" />{weatherData.weather[0].description}</p>
-          <dl>
-            <dt>Temperature</dt>
-            <dd>{weatherData.main.temp}</dd>
-            <dt>Feels like</dt>
-            <dd>{weatherData.main.feels_like}</dd>
-            <dt>High</dt>
-            <dd>{weatherData.main.temp_max}</dd>
-            <dt>Low</dt>
-            <dd>{weatherData.main.temp_min}</dd>
-          </dl>
-        </div>
-      )}
-    </form>
+    <Container className="m-4">
+      <form onSubmit={handleSubmit}>
+        <label>
+          Enter a city:
+          <input type="text" value={city} onChange={handleChange} />
+        </label>
+        <button type="submit">Search</button>
+        {weatherData && (
+          <div>
+            <h2>Weather for {weatherData.name}:</h2>
+            <p>
+              <img
+                src={`../images/icons/${weatherData.weather[0].icon}.png`}
+                alt="icon"
+              />
+              {weatherData.weather[0].description}
+            </p>
+            <dl>
+              <dt>Temperature</dt>
+              <dd>{weatherData.main.temp}</dd>
+              <dt>Feels like</dt>
+              <dd>{weatherData.main.feels_like}</dd>
+              <dt>High</dt>
+              <dd>{weatherData.main.temp_max}</dd>
+              <dt>Low</dt>
+              <dd>{weatherData.main.temp_min}</dd>
+            </dl>
+          </div>
+        )}
+      </form>
+    </Container>
   );
 }
 
