@@ -7,10 +7,11 @@ import './App.css';
 import type { GeoData, WeatherData } from './types/WeatherTypes';
 import Result from './components/Result';
 import LoadingSpinner from './components/LoadingSpinner';
+import { getWeather } from './scripts/api';
+import * as Constants from './constants';
 
 function App() {
-  const geoUrl = 'http://api.openweathermap.org/geo/1.0/direct';
-  const API_KEY = 'b386596393d82a307e75c0bfd7d0eb5b'; //todo add the .env after you have spun up the environment so it doesn't add the environment variable and the GET request fails, then explain
+  const API_KEY = process.env.REACT_APP_OPENWEATHER_API_KEY; //todo add the .env after you have spun up the environment so it doesn't add the environment variable and the GET request fails, then explain
   // todo don't include the parameter "imperial" on the Weather request, so that the temperature displays in kelvin, then explain
 
   const [city, setCity] = useState<string>('');
@@ -23,22 +24,18 @@ function App() {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    axios
-      .get<GeoData[]>(`${geoUrl}?q=${city}&appid=${API_KEY}`)
-      .then((response) => {
-        const { lat, lon } = response.data[0];
-        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
-        axios.get(weatherUrl).then((response) => {
-          setWeatherData(response.data);
-        });
-      });
+    setIsLoading(true);
+    const cityToSearch = city;
+    setCity(''); //todo leave this off at first. when you search a new city the old one will still be there, ugly
+    getWeather({ cityToSearch, setWeatherData, setIsLoading });
   };
 
   return (
     <Container>
-      <Header />
+      <Header city={weatherData?.name ? weatherData.name : 'your town'} />
+      {/* todo when adding this in, leave off the ? after weatherData. Observe the TS error. This gives us an opportunity to see another use for the ? in JS; this was a feature that was added in EcmaScript 2020 called Optional Chaining. It allows us to create a chain where each segment is evaluated. If is truthy, then the next segment is evaluated. If any segment of the chain is falsy, then the segments to the right are not evaluated since they obviously can't exist. This prevents us from getting an error on a nonexistent property. Other languages such as Ruby have already had this abiblity so it's nice to see JS keeping up. */}
       <Row className="my-4">
-        <Col md={3} className="px-4">
+        <Col md={4} className="px-4">
           <Form
             handleSubmit={handleSubmit}
             handleChange={handleChange}
@@ -46,8 +43,13 @@ function App() {
           />
         </Col>
         <Col className="px-4">
-          {isLoading && <LoadingSpinner />}
-          {weatherData && <Result weatherData={weatherData} />}
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            weatherData && (
+              <Result weatherData={weatherData} units={Constants.UNITS} />
+            )
+          )}
         </Col>
       </Row>
     </Container>

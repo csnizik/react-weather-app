@@ -4,21 +4,34 @@ import {
   CardSubtitle,
   CardTitle,
   CardText,
-  Col,
   Container,
-  Row,
 } from 'reactstrap';
-import type { WeatherData } from '../types/WeatherTypes';
+import type { ResultProps, WindValueProps } from '../types/WeatherTypes';
 
-export interface Props {
-  weatherData: WeatherData;
+function WindValue({ deg, speed, units }: WindValueProps) {
+  if (!speed) {
+    return <span>Calm</span>;
+  }
+  return (
+    <>
+      <img
+        src="../images/icons/down-arrow.png"
+        style={{ transform: `rotate(${deg}deg)` }}
+        alt="Wind direction"
+      />
+      <span> 
+        {Math.round(speed)} {units === 'imperial' ? 'mph' : 'km/h'}
+      </span>
+    </>
+  );
 }
 
-const Result = ({ weatherData }: Props) => {
+const Result = ({ weatherData, units }: ResultProps) => {
+  const tempUnits = units === 'imperial' ? 'F' : 'C';
+  // const testWind = 0;
   return (
     <Container>
       <Card className="result-card px-3">
-        
         <CardBody>
           <CardTitle tag="h5">{weatherData.name}</CardTitle>
           <hr />
@@ -33,23 +46,28 @@ const Result = ({ weatherData }: Props) => {
           <CardText>
             <dl>
               <dt>Temperature</dt>
-              <dd>{weatherData.main.temp}</dd>
+              <dd>
+                {Math.round(weatherData.main.temp)}°{tempUnits}
+              </dd>
               <dt>Feels like</dt>
-              <dd>{weatherData.main.feels_like}</dd>
+              <dd>
+                {Math.round(weatherData.main.feels_like)}°{tempUnits}
+              </dd>
               <dt>High</dt>
-              <dd>{weatherData.main.temp_max}</dd>
+              <dd>
+                {Math.round(weatherData.main.temp_max)}°{tempUnits}
+              </dd>
               <dt>Low</dt>
-              <dd>{weatherData.main.temp_min}</dd>
+              <dd>
+                {Math.round(weatherData.main.temp_min)}°{tempUnits}
+              </dd>
               <dt>Wind</dt>
               <dd className="result-wind">
-                {weatherData.wind.deg && (
-                  <img
-                    src="../images/icons/down-arrow.png"
-                    style={{ transform: `rotate(${weatherData.wind.deg}deg)` }}
-                    alt="Wind direction"
-                  />
-                )}
-                {weatherData.wind.speed} mph
+                <WindValue
+                  deg={weatherData.wind.deg}
+                  speed={weatherData.wind.speed}
+                  units={units}
+                />
               </dd>
             </dl>
           </CardText>

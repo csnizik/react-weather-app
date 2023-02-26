@@ -138,7 +138,7 @@ export interface LocalNames {
 }
 export interface WeatherData {
   coord: Coord;
-  weather: (WeatherEntity)[] ;
+  weather: WeatherEntity[];
   base: string;
   main: Main;
   visibility: number;
@@ -183,4 +183,14 @@ export interface Sys {
   country: string;
   sunrise: number;
   sunset: number;
+}
+export interface ResultProps {
+  weatherData: WeatherData;
+  units: 'metric' | 'imperial';
+}
+
+export interface WindValueProps {
+  deg?: number;
+  speed?: number;
+  units: 'metric' | 'imperial';
 }
