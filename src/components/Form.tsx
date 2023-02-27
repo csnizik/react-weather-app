@@ -1,6 +1,4 @@
-import { useState, ChangeEventHandler, FormEventHandler } from 'react';
-import axios from 'axios';
-import type { GeoData, WeatherData } from '../types/WeatherTypes';
+import {  ChangeEventHandler, FormEventHandler } from 'react';
 import {
   Form,
   FormGroup,
@@ -19,17 +17,6 @@ export interface Props {
 }
 
 const WeatherForm = ({handleChange, handleSubmit, city}: Props) => {
-  // const [city, setCity] = useState<string>('');
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-
-  const geoUrl = 'http://api.openweathermap.org/geo/1.0/direct';
-  const API_KEY = 'b386596393d82a307e75c0bfd7d0eb5b'; //todo add the .env after you have spun up the environment so it doesn't add the environment variable and the GET request fails, then explain
-  // todo don't include the parameter "imperial" on the Weather request, so that the temperature displays in kelvin, then explain
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setCity(event.target.value);
-  // };
-
   return (
     <Container className="my-4">
       <Form onSubmit={handleSubmit}>
