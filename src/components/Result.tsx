@@ -6,11 +6,28 @@ import {
   CardText,
   Container,
 } from 'reactstrap';
-import { tempUnits, windUnits } from '../utils/unitConversions'
-import type { ResultProps } from '../types/WeatherTypes';
+import { tempUnits, windUnits } from '../utils/unitConversions';
+import type { ResultProps, WindValueProps } from '../types/WeatherTypes';
 
+function WindValue({ deg, speed }: WindValueProps) {
+  if (!speed) {
+    return <span>Calm</span>;
+  }
+  return (
+    <>
+      <img
+        src="../images/icons/down-arrow.png"
+        style={{ transform: `rotate(${deg}deg)` }}
+        alt="Wind direction"
+      />
+      <span>
+        {Math.round(speed)} {windUnits}
+      </span>
+    </>
+  );
+}
 
-const Result = ({ weatherData }: ResultProps) => {
+const Result = ({ weatherData, units }: ResultProps) => {
   return (
     <Container>
       <Card className="result-card px-3">
@@ -28,20 +45,29 @@ const Result = ({ weatherData }: ResultProps) => {
           <CardText>
             <dl>
               <dt>Temperature</dt>
-              <dd>{Math.round(weatherData.main.temp)}°{tempUnits}</dd>
+              <dd>
+                {Math.round(weatherData.main.temp)}°{tempUnits}
+              </dd>
               <dt>Feels like</dt>
-              <dd>{Math.round(weatherData.main.feels_like)}°{tempUnits}</dd>
+              <dd>
+                {Math.round(weatherData.main.feels_like)}°{tempUnits}
+              </dd>
               <dt>High</dt>
-              <dd>{Math.round(weatherData.main.temp_max)}°{tempUnits}</dd>
+              <dd>
+                {Math.round(weatherData.main.temp_max)}°{tempUnits}
+              </dd>
               <dt>Low</dt>
-              <dd> {Math.round(weatherData.main.temp_min)}°{tempUnits}</dd>
+              <dd>
+                {' '}
+                {Math.round(weatherData.main.temp_min)}°{tempUnits}
+              </dd>
               <dt>Wind</dt>
               <dd className="result-wind">
-                <img
-                  src="../images/icons/down-arrow.png"
-                  alt="Wind direction"
+                <WindValue
+                  deg={weatherData.wind.deg}
+                  speed={weatherData.wind.speed}
+                  units={units}
                 />
-                <span>{Math.round(weatherData.wind.speed)} {windUnits}</span>
               </dd>
             </dl>
           </CardText>
