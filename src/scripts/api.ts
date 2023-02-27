@@ -2,11 +2,17 @@ import axios from 'axios';
 import type { GeoData } from '../types/WeatherTypes';
 import * as Constants from '../constants';
 
+export interface Props {
+  cityToSearch: string;
+  setWeatherData: Function;
+  setIsLoading: Function;
+}
+
 export function getWeather({
   cityToSearch,
   setWeatherData,
   setIsLoading,
-}: any) {
+}: Props) {
   axios
     .get<GeoData[]>(`${Constants.GEO_URL}&q=${cityToSearch}`)
     .then((response) => {
