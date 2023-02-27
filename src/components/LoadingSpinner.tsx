@@ -6,7 +6,7 @@ const LoadingSpinner = () => {
 
     <Button color="primary" disabled>
       <Spinner size="sm">Loading...</Spinner>
-      <span> Loading</span>
+      <span>Loading</span>
     </Button>
     </Container>
   );
